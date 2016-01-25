@@ -1,0 +1,27 @@
+Anarchy FileSystem v0.3
+
+-First 18 sectors are left as boot sectors block.
+-Next block is Root Directory
+	*FileEntry1
+	*FileEntry2
+	*FileEntry3
+	*...
+	*FileEntryN
+	*NullTerminatorEntry(All file name bytes are 0)
+
+	-File Entry
+	*(0-255) : File Name
+	*(256-259) : LBA no
+	*(260-263) : Byte Offset
+	*(264-267) : Size of the file in bytes
+-LBA number of null terminator should define where the next file should be placed.
+
+-Every Directory is a table of file entries.
+
+-File entries are direct entries. They should have 12 byte footers that indicate if the file continues in some other place. (File extender)
+	-File Extender
+	(0-3) LBA no
+	(4-7) Byte Offset
+	(8-11) Size of the next piece in bytes
+
+-Directiories can have file extenders.
