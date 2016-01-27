@@ -1,0 +1,43 @@
+; Print loading message
+	mov si, LoadingMsg
+	call Puts16
+
+	; Install GDT
+	call InstallGDT
+
+	mov si, GDTInstalled
+	call Puts16
+
+	
+
+	; Go into protected mode
+	cli
+	mov eax, cr0
+	or al, 1
+	mov cr0, eax
+
+	jmp 0x8:Stage3
+
+;----------------------------------------
+;	Stage 3 Entry Point
+;----------------------------------------
+
+
+bits 32		; MORE BITS, THAT'S GREAT
+
+MsgS3Loading db "Loading KaOS...", 0
+
+Stage3:
+	; Set registers
+	mov ax, 0x10
+	mov ds, ax
+	mov ss, ax
+	mov es, ax
+	mov esp, 90000h
+
+	mov si, MsgS3Loading
+	call Puts32
+
+Stop:
+	cli
+	hlt

@@ -1,7 +1,7 @@
 bits 16
 
 org 0x0
-;There's a problem here. (Segment registers and some other shit)
+
 jmp main
 
 ;=====================================
@@ -24,10 +24,14 @@ MsgStarting db "Starting Boot Stage 2", 0x0D, 0x0A, 0x00
 main:
 	
 	cli
-	push cs
-	pop ds
+	mov ax, 0x9C0
+	mov ds, ax
+	mov es, ax
+
+	mov ax, 0x9000
+	mov ss, ax
+	mov sp, 0xFFFF
 	sti
-	
 
 	mov si, MsgStarting		; Display Starting message
 	call Puts16

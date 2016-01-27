@@ -11,7 +11,7 @@
 ; Mode 7 defaults
 %define COLS 80
 %define LINES 25
-%define CHAR_ATTRIB 00000010b ; White text on black bg
+%define CHAR_ATTRIB 00000010b
 
 ;****Routine: Puts16()
 ;		-Prints a null terminated string

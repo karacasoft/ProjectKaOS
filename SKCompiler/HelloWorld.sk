@@ -1,0 +1,20 @@
+//This is not the final syntax, but it should give us an idea about
+// how our language will look.
+
+//using system libraries
+use <stdio>
+//use <graphics>
+//using custom libraries
+//use "mylibrary.sk"
+
+define static Print(obj : any) : void  //Default return type is void
+	obj.asString();
+end
+
+//Defining functions
+define static main() : int
+	
+	Print("Hello World");
+	return 0;
+
+end
