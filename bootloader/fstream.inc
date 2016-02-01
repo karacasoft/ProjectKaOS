@@ -10,7 +10,7 @@ org 0x0
 ;	Constants
 ;=========================================
 
-FileNameMaxSize dw 256
+FileNameSize dw 256
 
 
 ;=========================================
@@ -28,7 +28,7 @@ LoadDirFileTable:
 	push es
 	push bx
 
-
+	
 
 
 	pop bx

@@ -1,0 +1,45 @@
+What would you think when I say "computer"?
+Most of us would think that computer is a thing we use to login to our social media accounts, watch movies or do homework. And it's actually true. However we never see what's going on under that machine. You probably have heard of the 0s and 1s in the computer. But today, the abstraction level of computers are so great that we don't have to think of these.
+As I said in my last post, I have been working on developing an operating system in the last week. I am actually surprised that it was possible to directly manipulate the 0s and 1s in the memory of computer. And it actually happens a lot when we are programming. I wasn't that surprised when I first programmed a Commodore64 BASIC program. Maybe what surprised me was doing the same exact thing in a modern 32-bit computer. Though we never have to directly manipulate the RAM of our computer, it will be helpful if we at least learn how an operating system manages it.
+
+Let's start with how computers boot-up.
+The first step is POST(Power-On Self Test) performed by BIOS(Basic Input/Output System). It makes sure that everything works normally. Tests the memory, checks out the battery and if everything functions normally, then BIOS searches for a bootable drive. It can be a Hard Drive, USB Stick or a DVD, as long as the last 2 bytes of the first sector reads 0x55AA (hexadecimal, I'll talk about that later) then it's considered as bootable. It executes the first 512 bytes of the selected disk. Normally you can set everything up and boot the system here. But we may want to use two operating systems in one disk and boot the other one instead of that. Or select a boot-option (like safe-mode in Windows). And it's usually not possible to fit that in 512 bytes. So the first level of boot (I'll call it that.), starts another program which I'll call second level boot. Then your operating system starts and you use your computer.
+
+<h4>512 Bytes?</h4>
+Yup... Intel x86 chips are programmed to take the first 512 bytes of boot sector. We use assembly to give instruction directly to the CPU. Assembly is something like this:
+<ul>
+	<li>Write number 10 to disk at address:15</li>
+	<li>Take number 20</li>
+	<li>Add the thing at address:15 to it</li>
+	<li>Write it to address:20</li>
+	<li>...</li>
+	<li>Jump to 1st step</li>
+</ul>
+This is the 1 step upper level from the lowest level of computing. The lowest level? Let me show you the first 512 bytes of the program I have written:
+[Image of the first 512 bytes of my bios program]
+This is called machine language. This is the compiled version of most of your programs (At least they look like this). Assembly is the human "understandable" version of machine language. All the instructions have a keyword and some variables. These instructions then turn into "op code"s in the compiled version. For example a "mov" command in assembly translates into more than 15 op codes according to the parameters it takes.
+Also notice the 55AA bytes at the and of the file. :)
+This code is copied into RAM at address 0x7C00. Then CPU executes the code. As I said before, 512 bytes are not enough to work on your system. You have to switch the processor's mode to Protected Mode from Real Mode.
+Real Mode is 16-bit and you can use BIOS interrupts in Real Mode. BIOS interrupts actually make your life easier. You can print characters on screen, read/write disk, bake pizza, etc... BUT, because it is 16-bit, you are limited with 1MB of memory. You can't play your games with 1MB RAM, can you? Protected mode is 32 or 64 bit according to the processor, and has memory protection which prevents you from accidentally overwriting your important processes on RAM. You can reach up to 4GB of memory with a 32-bit processor. But BIOS interrupts are no longer available. There's literally nothing on the computer, unless you define it. Let's see how we check the files on the disk.
+
+<h4>Files</h4>
+<blockquote>
+-Me: CPU, can you show me the files on my disk?
+-CPU: What is a file?
+-Me: What you don't know them?
+-CPU: Nope, never seen of them. What do they look like?
+-Me: :facepalm:
+</blockquote>
+The point is, there's no consept of file. There's nothing, unless you program it. You can use a filesystem like FAT or ext4, or you can go with your own rules and create your own file system. Everything you do here is up to you. But to give your users best experience there are some features you must implement:
+<ul>
+	<li>Memory Management: Users will not know how to use RAM. Operating systems should give memory to processes and services.</li>
+	<li>Disk Management: Maybe your computer doesn't know what a file is. But your users do. And they'll want to manage them.</li>
+	<li>Devices: Montiors, Harddisks, USB devices,... your computer should know what these devices are and do necessary actions on them.</li>
+	<li>Things I don't know yet: I don't really know everything about operating systems and x86 chips. But there's a lot more things you have to implement in an operating system.</li>
+</ul>
+
+And this is the lowest level I can get to while programming, my friends. I'll be diving deeper into this ocean of bytes in the following week. I have uploaded my work in to github lately. If you ever want to see what I have accomplished, check it out:
+<blockquote>
+	git clone https://github.com/triforce930/ProjectKaOS.git
+</blockquote>
+[Image of KaOS working on my old computer]

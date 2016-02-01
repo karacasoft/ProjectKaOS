@@ -1,0 +1,52 @@
+Tokens should have at least 1 whitespace between them.
+Operators and terms are exception.
+
+Identifier rules:
+-Must not start with a digit
+-Case-sensitive
+-Cannot use any symbols (except "_")
+
+
+Arithmetics:
+<term> <operator> <term>
+
+-terms can be identifiers or constants.
+3 + 2 (valid)
+3 + myInteger (valid if myInteger was declared in the scope)
+3 + myFunction() (valid if myFunction was declared in the scope and returns a valid (addable) type)
+
+operators:
++ : add
+- : subtract
+* : multiply
+/ : divide
+% : modulo
+<- : assign
+
+Variables:
+var <identifier>[ : <type>]
+
+Default type is object.
+
+Variable Scope:
+Scope is defined by blocks. A variable defined inside a function is only available inside that function.
+A variable defined outside of the function is either a class field, or a global variable.
+Shortly, a parameter defined inside a block is only available inside that block.
+
+
+
+Functions:
+define [public|private] [static] <identifier>(<param_identifier> : <param_type>, ...)[ : <return_type>]
+
+end
+
+
+
+
+Using static libraries:
+use <<library_name>>
+
+
+
+Classes:
+**To be determined...**

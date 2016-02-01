@@ -1,0 +1,5 @@
+use <stdio16>
+
+var test : int <- 2;
+
+test <- 33+test-22;

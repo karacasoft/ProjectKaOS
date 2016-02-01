@@ -80,7 +80,7 @@ loader:
 
 	mov ah, 0x02					; Function read
 	mov al, 2						; Read 2 sectors
-	mov ch, 0						; Cylinder : (Aim for the) root directory :V
+	mov ch, 0						; Cylinder
 	mov cl, 2						; Sector
 	mov dh, 0						; Head
 	mov dl, BYTE [DriveNumber]
