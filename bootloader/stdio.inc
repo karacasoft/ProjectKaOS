@@ -34,6 +34,55 @@ Puts16Done:
 	popa
 	ret
 
+;**************************************
+;	intToString16(int, returnPlace);
+;		Converts integer to String if 
+;	possible.
+;	Stack usage: 4 bytes
+;**************************************
+
+decToStr db "0123456789"
+
+const10 dw 10
+
+intToString16:
+	push bp
+	xor bx, bx
+	mov bp, sp
+	mov ax, [bp+6]					;[LOCAL.0]
+	mov si, [bp+4]					;[LOCAL.1]
+.Loop1:
+	xor dx, dx						; dx <- 0
+	div WORD [const10]				; ax <- dx:ax / 10,  dx <- dx:ax % 10
+	
+	push bx
+	mov bx, dx
+	mov cl, BYTE [decToStr+bx]			; cl <- [decToStr + bx]
+	pop bx
+	mov BYTE [si], cl
+
+	or ax, ax						; if(ax == 0)
+	jz .Done						; jump to end
+
+	push bx
+.Loop2:
+	dec bx							; bx--
+	mov cl, BYTE [si+bx]
+	mov BYTE [si+bx+1], cl 			; [si+bx+1] <- [si+bx]
+	
+	or bx, bx
+	jnz .Loop2
+	pop bx
+
+	inc bx
+	jmp .Loop1
+
+.Done:
+	mov sp, bp
+	pop bp
+	ret
+
+
 ;*********************Routine: Putch32()
 ;		-Prints a char.
 ;	Works on pMode too.
@@ -102,5 +151,8 @@ Puts32:
 .Puts32Done:
 	popa
 	ret
+
+
+
 
 %endif ; __STDIO_INC_INCLUDED__

@@ -7,9 +7,11 @@ bits 16
 ;**************************************
 
 puts16:
+	push bp
 	push si
 	push ax
-	mov si, [sp + 6]		;[LOCAL.0]
+	mov bp, sp
+	mov si, [bp+8]					;[LOCAL.0]
 .Loop1:
 	lodsb
 	or al, al
@@ -21,29 +23,42 @@ puts16:
 .Done:
 	pop ax
 	pop si
+	pop bp
 	ret
 
 ;**************************************
 ;	intToString(int, returnPlace);
 ;		Converts integer to String if 
 ;	possible.
-;	Stack usage: 2 bytes
+;	Stack usage: 4 bytes
 ;**************************************
 
 decToStr: db "0123456789"
 
+const10: dw 10
+
 intToString16:
-	push si
-	push ax
-	push dx
-	mov ax, [sp + 10]		;[LOCAL.0]
+	push bp
+	xor bx, bx
+	mov bp, sp
+	mov ax, [bp+6]					;[LOCAL.0]
+	mov si, [bp+4]					;[LOCAL.1]
 .Loop1:
-	xor dx, dx
-	;TODO print int on screen
+	xor dx, dx						; dx <- 0
+	div WORD [const10]				; ax <- dx:ax / 10,  dx <- dx:ax % 10
+	or ax, ax						; if(ax == 0)
+	jz .Done						; jump to end
 
+	push bx
+	mov bx, dx
+	mov cl, [decToStr+bx]			; bl <- [decToStr + dx]
+	pop bx
+	mov [si+bx], cl
 
-.Done
-	pop dx
-	pop ax
-	pop si
+	inc bx
+	jmp .Loop1
+
+.Done:
+	mov sp, bp
+	pop bp
 	ret

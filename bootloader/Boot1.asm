@@ -79,7 +79,7 @@ loader:
 	xor bx, bx
 
 	mov ah, 0x02					; Function read
-	mov al, 2						; Read 2 sectors
+	mov al, 1						; Read 2 sectors
 	mov ch, 0						; Cylinder
 	mov cl, 2						; Sector
 	mov dh, 0						; Head
@@ -92,7 +92,9 @@ loader:
 	mov si, MsgAllOK
 	call Print
 
-	jmp 0x9C00
+	push WORD 0x09C0
+	push WORD 0x0000
+	retf
 
 .Fail:
 	; Print fail message
