@@ -64,6 +64,8 @@ intToString16:
 	or ax, ax						; if(ax == 0)
 	jz .Done						; jump to end
 
+	inc bx
+
 	push bx
 .Loop2:
 	dec bx							; bx--
@@ -74,7 +76,6 @@ intToString16:
 	jnz .Loop2
 	pop bx
 
-	inc bx
 	jmp .Loop1
 
 .Done:
@@ -98,7 +99,6 @@ Putch32:
 	mov edi, VIDMEM
 
 	xor eax, eax
-
 	mov ecx, COLS*2
 	mov al, BYTE [_CurY]
 	mul ecx

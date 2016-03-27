@@ -79,7 +79,7 @@ loader:
 	xor bx, bx
 
 	mov ah, 0x02					; Function read
-	mov al, 1						; Read 2 sectors
+	mov al, 4						; Read 3 sectors
 	mov ch, 0						; Cylinder
 	mov cl, 2						; Sector
 	mov dh, 0						; Head
@@ -91,6 +91,8 @@ loader:
 	; Print success message
 	mov si, MsgAllOK
 	call Print
+
+	mov dl, BYTE [DriveNumber]
 
 	push WORD 0x09C0
 	push WORD 0x0000

@@ -6,6 +6,8 @@
 
 org 0x0
 
+bits 16
+
 ;=========================================
 ;	Constants
 ;=========================================
@@ -28,7 +30,19 @@ LoadDirFileTable:
 	push es
 	push bx
 
-	
+.ReadDrive:
+	mov ax, 0x9C0
+	mov es, ax
+	xor bx, bx
+
+	mov ah, 0x02					; Function read
+	mov al, 1						; Read 2 sectors
+	mov ch, 0						; Cylinder
+	mov cl, 2						; Sector
+	mov dh, 0						; Head
+	mov dl, BYTE [DriveNumber]
+	int 0x13
+	jc .Fail	
 
 
 	pop bx
